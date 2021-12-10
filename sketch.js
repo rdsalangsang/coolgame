@@ -10,9 +10,24 @@ let BobHealth = 0;
 let BulletHell=[];
 let shots=0;
 let radius=0;
-let xpos=0;
-let ypos=370;
+let xpos=300;
+let ypos=100;
 
+let endingIndex;
+let bobWin=[
+  {name:"haha"},
+  {name:"lol loser"},
+  {name:"let me sleep now"},
+  {name:"k bye"},
+  {name:"better luck next time"}
+];
+let heroWin=[
+  {name:"dangit"},
+  {name:"i just wanna sleep"},
+  {name:"well then"},
+  {name:"heck"},
+  {name:"$%#@"}
+];
 
 function setup() {
   cnv = createCanvas(600, 600);
@@ -69,7 +84,7 @@ function title() {
   stroke(255);
   fill(220);
   textAlign(CENTER);
-  text('Cool Game', 300, 100);
+  text("Bob", 300, 100);
   textSize(25);
   text('click to start', 300, 300)
 }
@@ -101,15 +116,16 @@ function level() {
     ypos=ypos-10;
   }
   else{
-    ypos=hero.y-hero.r;
-    xpos=hero.x;
+    ypos=heroPosY-hero.r;
+    xpos=heroPosX;
     BobHealth=BobHealth+2;
   }
+
   stroke(240);
-  strokeWeight(1);
-  fill(0);
-  ellipse(heroPosX,heroPosY,radius);
-///hero BobHealth
+  strokeWeight(3);
+  fill(150);
+  ellipse(xpos,ypos,radius);
+///hero Health
 noStroke
 fill(52,235,70);
 stroke(250);
@@ -126,7 +142,7 @@ if(d<(hero.r+BulletHell[i].r)){
   BulletHell[i].shot();
 }
 //loser
-if (shots>3){
+if (shots>4){
   state='lose';
 }
 //Winner
@@ -147,22 +163,66 @@ function introMouseClicked() {
 
 function victory() {
   background(50);
-  textSize(75);
   stroke(255);
+  strokeWeight(2);
+  fill(240);
+  ellipse(300, 210, 150);
+  fill(50);
+  ellipse(260, 205, 20);
+  ellipse(330, 190, 20);
+  stroke(50);
+  line(340, 260, 260, 255);
+  stroke(255);
+  triangle(300, 285, 380, 260, 360, 300);
+  triangle(300, 285, 210, 260, 250, 300);
+  ellipse(300, 285, 20);
+  textSize(75);
+  fill(250);
+  textSize(75);
+  fill(255);
+  noStroke();
   textAlign(CENTER);
   text('Winner!', 300, 100);
-  textSize(25);
-  text('refresh to play again', 300, 300)
+  if(heroWin[0]){
+    endingIndex=int(random(heroWin.length));
+    fill(255);
+    textSize(25);
+    text(heroWin[endingIndex].name,300,370)
+  };
+  heroWin.splice(endingIndex,1);
+  textSize(15);
+  text('refresh to play again', 300, 500)
 }
 
 function lose(){
   background(50);
+  stroke(255);
+  strokeWeight(2);
+  fill(240);
+  ellipse(300, 210, 150);
+  fill(50);
+  ellipse(260, 205, 20);
+  ellipse(330, 190, 20);
+  stroke(50);
+  line(340, 260, 260, 255);
+  stroke(255);
+  triangle(300, 285, 380, 260, 360, 300);
+  triangle(300, 285, 210, 260, 250, 300);
+  ellipse(300, 285, 20);
   textSize(75);
-  stroke(250);
+  fill(250);
+  noStroke();
   textAlign(CENTER);
   text("You lose!",300,100);
-  textSize(25);
-  text('refresh to try again',300,300)
+  if(bobWin[0]){
+    endingIndex=int(random(bobWin.length));
+    fill(255);
+    textSize(25);
+    text(bobWin[endingIndex].name,300,370)
+  };
+  heroWin.splice(endingIndex,1);
+  textSize(15);
+  text('refresh to try again',300,500)
 }
 // function victoryMouseClicked() {
 //   state = 'title';
@@ -188,19 +248,19 @@ class Player{
   move() {
     //up
     if (keyIsDown(87) && heroPosY>5){
-      heroPosY-=2
+      heroPosY-=3.5;
     }
     //down
    if (keyIsDown(83) && heroPosY<height-5){
-     heroPosY+=2
+     heroPosY+=3.5;
    }
    //left
     if (keyIsDown(65) && heroPosX>5){
-      heroPosX -=2;
+      heroPosX -=3.5;
     }
     //right
     if (keyIsDown(68) && heroPosX<width-5){
-      heroPosX+=2;
+      heroPosX+=3.5;
     }
   }
   shot(){
@@ -221,7 +281,7 @@ class Bob{
   noStroke();
   fill(250);
   text("man, I just wanna sleep",100,100);
-  text("take some raining bullets",500,100);
+  text("plz.let me sleep",500,100);
   stroke(255);
   strokeWeight(2);
   fill(240);
@@ -246,7 +306,7 @@ class Bob{
 //test
 class Projectile{
   constructor(){
-    this.x=random(30,540);
+    this.x=random(0,555);
     this.y=50;
     this.r=30;
   }
@@ -255,16 +315,16 @@ class Projectile{
     ellipse(this.x,this.y,this.r);
   }
   fire(){
-    if(this.y<450){
+    if(this.y<550){
       this.y=this.y+7
     }
     else{
       this.y=200
-      this.x=random(200,500);
+      this.x=random(0,600);
     }
   }
   shot(){
-    this.y=200
-    this.x=random(200,500);
+    this.y=100
+    this.x=random(100,500);
   }
 }
